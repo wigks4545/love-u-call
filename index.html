@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>아이러부야 - 러부콜</title>
+
+  <style>
+    :root {
+      --main: #3147ff;
+      --dark: #172033;
+      --soft: #f4f6fb;
+      --line: #e5e8f0;
+      --text: #2a2f3a;
+      --muted: #6b7280;
+      --success: #16a34a;
+      --warning: #f59e0b;
+      --white: #ffffff;
+      --radius: 18px;
+      --shadow: 0 14px 34px rgba(20, 30, 60, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", sans-serif;
+      color: var(--text);
+      background: #ffffff;
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 18px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .logo {
+      font-weight: 900;
+      font-size: 20px;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-badge {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: var(--main);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+    }
+
+    .logo small {
+      font-weight: 800;
+      font-size: 13px;
+      color: var(--main);
+      margin-left: 2px;
+    }
+
+    .menu {
+      display: flex;
+      gap: 18px;
+      font-weight: 700;
+      color: #4b5563;
+      font-size: 15px;
+    }
+
+    .menu a:hover { color: var(--main); }
+
+    .hero {
+      background:
+        radial-gradient(circle at 10% 20%, rgba(49, 71, 255, 0.16), transparent 28%),
+        radial-gradient(circle at 80% 10%, rgba(22, 163, 74, 0.14), transparent 30%),
+        linear-gradient(135deg, #f8faff 0%, #eef3ff 100%);
+      padding: 78px 24px 70px;
+    }
+
+    .hero-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      background: #fff;
+      color: var(--main);
+      border: 1px solid rgba(49, 71, 255, 0.16);
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: clamp(34px, 5vw, 56px);
+      line-height: 1.12;
+      margin: 0 0 20px;
+      letter-spacing: -1.6px;
+      color: var(--dark);
+    }
+
+    h1 span { display: block; }
+
+    .hero p {
+      font-size: 19px;
+      color: #4b5563;
+      max-width: 660px;
+      margin: 0 0 28px;
+    }
+
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .btn {
+      border: 0;
+      cursor: pointer;
+      padding: 13px 18px;
+      border-radius: 13px;
+      font-weight: 800;
+      font-size: 15px;
+      transition: 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: var(--main);
+      color: white;
+      box-shadow: 0 10px 24px rgba(49, 71, 255, 0.28);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--dark);
+      border: 1px solid var(--line);
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+    .btn:disabled { opacity: 0.6; cursor: default; transform: none; }
+
+    .hero-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      padding: 34px 30px;
+    }
+
+    .hero-card-title {
+      margin: 0 0 26px;
+      font-size: 24px;
+      color: var(--dark);
+      font-weight: 900;
+      letter-spacing: -0.6px;
+      text-align: center;
+    }
+
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 18px 0;
+      gap: 18px;
+    }
+
+    .status-row > div { width: 50%; text-align: center; }
+
+    .status-row strong {
+      font-size: 32px;
+      color: var(--dark);
+      display: block;
+    }
+
+    .status-row span {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .hero-note {
+      margin: 6px 0 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12.5px;
+    }
+
+    section { padding: 78px 24px; }
+
+    .container { max-width: 1180px; margin: 0 auto; }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: end;
+      margin-bottom: 28px;
+    }
+
+    .section-title h2 {
+      font-size: clamp(28px, 4vw, 40px);
+      margin: 0;
+      letter-spacing: -1px;
+      color: var(--dark);
+    }
+
+    .section-title p { margin: 8px 0 0; color: var(--muted); }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 26px;
+    }
+
+    .tab {
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-weight: 800;
+      color: #4b5563;
+      cursor: pointer;
+    }
+
+    .tab.active {
+      background: var(--dark);
+      color: #fff;
+      border-color: var(--dark);
+    }
+
+    .job-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .job-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 22px;
+      background: #fff;
+      box-shadow: 0 8px 22px rgba(20, 30, 60, 0.05);
+      display: flex;
+      flex-direction: column;
+      min-height: 285px;
+    }
+
+    .job-card h3 { margin: 12px 0 8px; font-size: 21px; color: var(--dark); }
+    .job-card p { margin: 0; color: var(--muted); flex: 1; }
+
+    .tags { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0 18px; }
+
+    .tag {
+      background: var(--soft);
+      color: #4b5563;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .card-actions { display: flex; gap: 8px; }
+    .card-actions .btn { flex: 1; padding: 11px 12px; font-size: 14px; }
+
+    .card-top { display: flex; justify-content: space-between; align-items: center; }
+
+    .department { color: var(--main); font-weight: 900; font-size: 14px; }
+
+    .badge {
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      background: rgba(22, 163, 74, 0.1);
+      color: var(--success);
+    }
+
+    .recommend { background: var(--soft); }
+
+    .recommend-box {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .panel {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 26px;
+      box-shadow: var(--shadow);
+    }
+
+    .question { margin-bottom: 18px; }
+
+    .question label {
+      display: block;
+      font-weight: 900;
+      margin-bottom: 8px;
+      color: var(--dark);
+    }
+
+    .question .hint { font-weight: 700; color: var(--muted); font-size: 12.5px; }
+
+    select, input[type="text"], input[type="tel"] {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      font-size: 15px;
+      font-family: inherit;
+      background: #fff;
+    }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .result {
+      min-height: 310px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 90% 20%, rgba(49, 71, 255, 0.12), transparent 26%),
+        #fff;
+    }
+
+    .result h3 { margin: 0 0 12px; font-size: 28px; color: var(--dark); }
+
+    .result-list { margin: 18px 0 0; padding: 0; list-style: none; }
+
+    .result-list li {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      font-weight: 700;
+    }
+
+    .fun-note {
+      margin-top: 16px;
+      font-size: 12.5px;
+      color: var(--muted);
+      background: var(--soft);
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+
+    .rec-list { display: flex; flex-direction: column; gap: 12px; margin-top: 6px; }
+    .rec-job {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+      background: #fff;
+    }
+    .rec-job-top { display: flex; align-items: baseline; gap: 10px; margin-bottom: 6px; }
+    .rec-dept { color: var(--main); font-weight: 900; font-size: 13px; }
+    .rec-job-top strong { color: var(--dark); font-size: 18px; }
+    .rec-desc { margin: 0 0 12px; color: var(--muted); font-size: 14px; }
+    .rec-actions { display: flex; gap: 8px; }
+    .rec-actions .btn { flex: 1; padding: 10px 12px; font-size: 14px; }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(13, 20, 35, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 99;
+    }
+
+    .modal.open { display: flex; }
+
+    .modal-card {
+      width: min(640px, 100%);
+      background: #fff;
+      border-radius: 24px;
+      padding: 26px;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.22);
+      max-height: 90vh;
+      overflow: auto;
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: start;
+      margin-bottom: 18px;
+    }
+
+    .close {
+      background: var(--soft);
+      border: 0;
+      border-radius: 10px;
+      width: 38px;
+      height: 38px;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .detail-box {
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+      margin-top: 18px;
+    }
+
+    .detail-box h3 { margin: 0 0 10px; color: var(--dark); font-size: 18px; }
+    .detail-box ul { margin: 0; padding-left: 20px; color: var(--text); }
+    .detail-box li { margin: 8px 0; font-weight: 700; }
+
+    .info-box { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 8px 18px; }
+    .info-row { display: flex; justify-content: space-between; gap: 14px; padding: 11px 0; border-bottom: 1px solid var(--line); }
+    .info-row:last-child { border-bottom: 0; }
+    .info-row span { color: var(--muted); font-weight: 800; font-size: 13px; flex: 0 0 auto; }
+    .info-row b { color: var(--dark); font-weight: 700; font-size: 14px; text-align: right; }
+
+    .form-row { margin-bottom: 14px; }
+    .form-row label {
+      display: block;
+      font-weight: 800;
+      margin-bottom: 6px;
+      color: var(--dark);
+      font-size: 14px;
+    }
+    .form-row .req { color: var(--warning); }
+
+    .notice {
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      color: #9a3412;
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      margin: 4px 0 16px;
+    }
+
+    .consent {
+      display: flex;
+      gap: 10px;
+      align-items: start;
+      font-size: 13px;
+      color: var(--text);
+      margin: 4px 0 16px;
+      font-weight: 600;
+    }
+    .consent input { margin-top: 3px; width: 18px; height: 18px; flex: 0 0 auto; }
+
+    .apply-success {
+      text-align: center;
+      padding: 20px 6px;
+    }
+    .apply-success .ok {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: rgba(22,163,74,0.12); color: var(--success);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 32px; margin-bottom: 14px;
+    }
+
+    .field-error { color: #b91c1c; font-size: 12.5px; margin-top: 6px; font-weight: 700; }
+
+    footer {
+      background: var(--dark);
+      color: #cbd5e1;
+      padding: 36px 24px;
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .hero-inner, .recommend-box { grid-template-columns: 1fr; }
+      .job-grid { grid-template-columns: 1fr; }
+      .menu { display: none; }
+      section { padding: 58px 18px; }
+      .status-row { gap: 10px; }
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <nav class="nav">
+      <a class="logo" href="#">
+        <span class="logo-badge">✦</span>
+        아이러부야 <small>러부콜</small>
+      </a>
+
+      <div class="menu">
+        <a href="#jobs">사명 안내</a>
+        <a href="#recommend">나에게 맞는 사명 추천</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-inner">
+        <div>
+          <div class="eyebrow">아이러부야 · 러부콜</div>
+
+          <h1>
+            <span>러부콜,</span>
+            <span>하나님과 연결되는 시간</span>
+          </h1>
+
+          <p>
+            교회안의 다양한 사명 기회를 한곳에서 안내받고,
+            자신의 관심과 성향에 맞는 하나님의 일을 알아볼 수 있도록 돕습니다.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#jobs">사명 안내</a>
+            <a class="btn btn-secondary" href="#recommend">나에게 맞는 사명 추천</a>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <h2 class="hero-card-title">러부콜 참여 현황</h2>
+
+          <div class="status-row">
+            <div>
+              <strong id="statDept">–</strong>
+              <span>참여 가능 사명</span>
+            </div>
+
+            <div>
+              <strong id="statApply">–</strong>
+              <span>이번 신청 현황</span>
+            </div>
+          </div>
+          <p class="hero-note" id="statNote">오픈 준비 중입니다</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="jobs">
+      <div class="container">
+        <div class="section-title">
+          <div>
+            <h2>사명 안내</h2>
+            <p>
+              교회 안의 다양한 사명 기회를 확인하고,
+              각 부서와 세부 업무 내용을 살펴본 뒤 바로 신청할 수 있습니다.
+            </p>
+          </div>
+        </div>
+
+        <div class="tabs">
+          <button class="tab active" onclick="filterJobs('all', this)">전체</button>
+          <button class="tab" onclick="filterJobs('콘텐츠제작', this)">콘텐츠제작</button>
+          <button class="tab" onclick="filterJobs('행사지원', this)">행사지원</button>
+          <button class="tab" onclick="filterJobs('행정지원', this)">행정지원</button>
+          <button class="tab" onclick="filterJobs('기타', this)">기타</button>
+        </div>
+
+        <div class="job-grid" id="jobGrid"></div>
+      </div>
+    </section>
+
+    <section class="recommend" id="recommend">
+      <div class="container">
+        <div class="section-title">
+          <div>
+            <h2>나에게 맞는 사명 추천</h2>
+            <p>
+              참여 가능한 시간과 MBTI·에니어그램·혈액형을 선택하면
+              어울리는 사명(일거리)을 추천합니다.
+            </p>
+          </div>
+        </div>
+
+        <div class="recommend-box">
+          <div class="panel">
+            <div class="question">
+              <label for="time">참여 가능한 시간</label>
+              <select id="time">
+                <option value="">선택 안 함</option>
+                <option value="worship">주일 예배 전후 (1~2시간)</option>
+                <option value="weekday">평일 낮 시간</option>
+                <option value="evening">평일 저녁 시간</option>
+                <option value="short">짧게 30분~1시간</option>
+                <option value="half">반나절 정도</option>
+                <option value="event">행사 때만 집중적으로</option>
+                <option value="regular">정기적으로 꾸준히</option>
+              </select>
+            </div>
+
+            <div class="grid-2">
+              <div class="question">
+                <label for="mbti">MBTI <span class="hint">(선택)</span></label>
+                <select id="mbti">
+                  <option value="">선택 안 함</option>
+                  <option value="ISTJ">ISTJ</option><option value="ISFJ">ISFJ</option>
+                  <option value="INFJ">INFJ</option><option value="INTJ">INTJ</option>
+                  <option value="ISTP">ISTP</option><option value="ISFP">ISFP</option>
+                  <option value="INFP">INFP</option><option value="INTP">INTP</option>
+                  <option value="ESTP">ESTP</option><option value="ESFP">ESFP</option>
+                  <option value="ENFP">ENFP</option><option value="ENTP">ENTP</option>
+                  <option value="ESTJ">ESTJ</option><option value="ESFJ">ESFJ</option>
+                  <option value="ENFJ">ENFJ</option><option value="ENTJ">ENTJ</option>
+                </select>
+              </div>
+
+              <div class="question">
+                <label for="enneagram">에니어그램 <span class="hint">(선택)</span></label>
+                <select id="enneagram">
+                  <option value="">선택 안 함</option>
+                  <option value="1">1번 · 개혁가</option>
+                  <option value="2">2번 · 조력가</option>
+                  <option value="3">3번 · 성취가</option>
+                  <option value="4">4번 · 예술가</option>
+                  <option value="5">5번 · 탐구가</option>
+                  <option value="6">6번 · 충실가</option>
+                  <option value="7">7번 · 열정가</option>
+                  <option value="8">8번 · 지도자</option>
+                  <option value="9">9번 · 중재자</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="question">
+              <label for="blood">혈액형 <span class="hint">(선택)</span></label>
+              <select id="blood">
+                <option value="">선택 안 함</option>
+                <option value="A">A형</option>
+                <option value="B">B형</option>
+                <option value="O">O형</option>
+                <option value="AB">AB형</option>
+              </select>
+            </div>
+
+            <button class="btn btn-primary" style="width:100%" onclick="recommendWork()">
+              나에게 맞는 사명 확인하기
+            </button>
+          </div>
+
+          <div class="panel result" id="recommendResult">
+            <h3>추천 결과가 여기에 표시됩니다</h3>
+            <p>
+              참여 가능한 시간이나 MBTI·에니어그램·혈액형 중
+              하나 이상을 선택한 뒤 버튼을 눌러보세요.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    아이러부야 · 러부콜 — 가능한 시간에, 가능한 만큼 작은 사명을 연결합니다
+  </footer>
+
+  <!-- 사명 상세 + 신청 모달 -->
+  <div class="modal" id="jobModal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div>
+          <h2 id="modalTitle" style="margin:0;color:var(--dark)">사명 소개</h2>
+          <p id="modalDesc" style="margin:8px 0 0;color:var(--muted)">
+            사명에 대한 소개글이 표시됩니다.
+          </p>
+        </div>
+        <button class="close" onclick="closeModal()">×</button>
+      </div>
+
+      <!-- 상세 보기 -->
+      <div id="detailView">
+        <div class="info-box" id="modalInfo"></div>
+        <div class="detail-box">
+          <h3>주요 업무</h3>
+          <ul id="modalDetailList"><li>세부 업무가 표시됩니다.</li></ul>
+        </div>
+        <button class="btn btn-primary" style="width:100%; margin-top:18px" onclick="showApplyForm()">
+          이 사명 신청하기
+        </button>
+        <button class="btn btn-secondary" style="width:100%; margin-top:10px" onclick="closeModal()">
+          닫기
+        </button>
+      </div>
+
+      <!-- 신청 폼 -->
+      <div id="applyView" style="display:none">
+        <div class="notice">
+          러부콜은 정식 부원이 되는 것이 아니라, 가능한 시간에 함께하는 참여 제도입니다.
+          신청 즉시 확정이 아니며, 운영자 확인과 소속부서 승인·담당부서 연결이 끝난 뒤 최종 확정됩니다.
+        </div>
+
+        <div class="form-row">
+          <label>신청 사명</label>
+          <input type="text" id="applyJob" readonly />
+        </div>
+        <div class="form-row">
+          <label>이름 <span class="req">*</span></label>
+          <input type="text" id="applyName" placeholder="예) 김성도" />
+        </div>
+        <div class="form-row">
+          <label>연락처 또는 텔레그램 아이디 <span class="req">*</span></label>
+          <input type="tel" id="applyPhone" placeholder="예) 010-1234-5678 또는 @telegram_id" />
+        </div>
+        <div class="form-row">
+          <label>부서 / 지역 / 구역 <span class="req">*</span></label>
+          <input type="text" id="applyDept" placeholder="예) 00회 / 동래 / 00구역" />
+        </div>
+
+        <label class="consent">
+          <input type="checkbox" id="applyConsent" />
+          <span>개인정보(이름·연락처·부서/지역/구역) 수집·이용에 동의합니다. 수집한 정보는 러부콜 참여 연락·운영 목적에만 사용됩니다.</span>
+        </label>
+
+        <div class="field-error" id="applyError" style="display:none"></div>
+
+        <button class="btn btn-primary" style="width:100%" id="applySubmitBtn" onclick="submitApply()">
+          신청 접수하기
+        </button>
+        <button class="btn btn-secondary" style="width:100%; margin-top:10px" onclick="backToDetail()">
+          뒤로
+        </button>
+      </div>
+
+      <!-- 신청 완료 -->
+      <div id="doneView" style="display:none">
+        <div class="apply-success">
+          <div class="ok">✓</div>
+          <h2 style="margin:0 0 8px;color:var(--dark)">신청이 접수되었어요</h2>
+          <p style="margin:0;color:var(--muted)">
+            운영자 확인 후 소속부서 승인·담당부서 연결을 거쳐<br/>
+            담당자가 개별로 연락드립니다. 함께해주셔서 감사합니다.
+          </p>
+          <button class="btn btn-primary" style="margin-top:20px" onclick="closeModal()">확인</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* =========================================================
+       [설정] 신청 명단 저장 — SheetDB (구글시트에 한 줄씩 저장)
+
+       [준비 방법]
+       1) 구글 드라이브에서 새 구글시트를 만든다.
+       2) 첫 줄(1행)에 아래 제목을 이 순서·글자 그대로 입력한다 (띄어쓰기까지 동일):
+          A1 신청일시  B1 신청사명  C1 담당부서  D1 이름
+          E1 연락처   F1 부서/지역/구역   G1 상태
+       3) https://sheetdb.io 접속 → 구글 계정 로그인 → "Create new API"
+          → 방금 만든 시트를 연결하면 API 주소가 나온다.
+       4) 그 주소(https://sheetdb.io/api/v1/... )를 아래 따옴표 안에 붙여넣는다.
+       비워두면 신청은 화면상으로만 접수되고 시트에 저장되지 않습니다.
+       ========================================================= */
+    const SHEETDB_API_URL = "https://sheetdb.io/api/v1/v2exzyiybgqeq"; // 러부콜 신청 저장 시트
+
+    const jobs = [
+      { id: "job1", dept: "행정서무부", title: "기록보존과 자료 디지털화 및 정리 지원", type: "기타", catLabel: "기타",
+        time: "매주 1~2회 / 회당 2시간", place: "성전 2층 기록보존실", people: "5명",
+        desc: "지파의 소중한 기록을 온전히 보존하기 위한 아날로그 자료 디지털화 작업에 함께할 협조 인원을 모집합니다.",
+        tags: ["기타","시간 협의","5명"],
+        details: ["비디오테이프 및 오디오테이프 디지털 변환","문서 스캔","설교 녹취"] },
+      { id: "job2", dept: "해외선교부", title: "웹업무서기", type: "행정지원", catLabel: "행정지원",
+        time: "필요시 정해진시간 없이 본인이 하면 됩니다.", place: "성전", people: "인원 협의",
+        desc: "해외교회 웹입력업무 관련해서, 가끔 너무 많아서 일손이 필요할 때가 있습니다. 엑셀 을 기본적으로 다루실 수 있는 분,…",
+        tags: ["행정지원","시간 자유","인원 협의"],
+        details: ["해외교회 웹입력업무 관련해서, 가끔 너무 많아서 일손이 필요할 때가 있습니다. 엑셀 을 기본적으로 다루실 수 있는 분, 그리고 보안 정신이 있으시면 됩니다."] },
+      { id: "job3", dept: "국제부", title: "국내거주외국인만남", type: "행사지원", catLabel: "행사지원",
+        time: "매주 토요일 저녁시간(다원화), 그외 전도활동", place: "서면일대", people: "2~3명",
+        desc: "외국인 만남 현장의 분위기 메이커 역할, 참여하면서 직접 열매도 맺을수 있습니다. 인도자, 섬김이로 자연스럽게 함께 활…",
+        tags: ["행사지원","토요일","2~3명"],
+        details: ["외국인 만남 현장의 분위기 메이커 역할, 참여하면서 직접 열매도 맺을수 있습니다. 인도자, 섬김이로 자연스럽게 함께 활동 가능합니다.","기본적인 언어 가능하시면 좋지만, 언어 가능하지 않아도 좋습니다."] },
+      { id: "job4", dept: "학생회", title: "식사봉사", type: "기타", catLabel: "기타",
+        time: "매주 일 8-11시", place: "하단 신설 학생회실", people: "2명",
+        desc: "학생회 주일 식사봉사(8월부터)",
+        tags: ["기타","주일","2명"],
+        details: ["학생회 주일 식사봉사(8월부터)"] },
+      { id: "job5", dept: "문화부", title: "성도님 간증 영상 제작 스탭", type: "콘텐츠제작", catLabel: "콘텐츠제작",
+        time: "매주 화 / 회당 2시간", place: "성전 3층 문화부실", people: "2명",
+        desc: "영상 편집(캡컷, VLLO 등 기초 편집)",
+        tags: ["콘텐츠제작","화요일","2명"],
+        details: ["영상 편집(캡컷, VLLO 등 기초 편집)"] },
+      { id: "job6", dept: "문화부", title: "총회장님 말씀 영상 제작 스탭", type: "콘텐츠제작", catLabel: "콘텐츠제작",
+        time: "매주 목 / 회당 2시간", place: "성전 3층 문화부실", people: "2명",
+        desc: "영상 편집(캡컷, VLLO 등 기초 편집)",
+        tags: ["콘텐츠제작","목요일","2명"],
+        details: ["영상 편집(캡컷, VLLO 등 기초 편집)"] },
+      { id: "job7", dept: "사업부", title: "매점운영", type: "행사지원", catLabel: "행사지원",
+        time: "매주 수 정오예배 전후 1시간, 저녁예배 전후 30분", place: "3층 매점", people: "인원 협의",
+        desc: "물건 판매 및 캐셔 업무",
+        tags: ["행사지원","수요일","인원 협의"],
+        details: ["물건 판매 및 캐셔 업무"] },
+      { id: "job8", dept: "교육부", title: "ppt제작", type: "콘텐츠제작", catLabel: "콘텐츠제작",
+        time: "자유", place: "통합 행정실 또는자택 가능", people: "인원 협의",
+        desc: "교육부 관련 ppt 제작 지원",
+        tags: ["콘텐츠제작","시간 자유","인원 협의"],
+        details: ["교육부 관련 ppt 제작 지원"] },
+      { id: "job9", dept: "문화부", title: "전성도 기도회 영상 제작 스탭", type: "콘텐츠제작", catLabel: "콘텐츠제작",
+        time: "매주 주일 20시 전 / 회당 20분", place: "자택", people: "2명",
+        desc: "영상 편집(캡컷, VLLO 등 기초 편집)",
+        tags: ["콘텐츠제작","주일","2명"],
+        details: ["영상 편집(캡컷, VLLO 등 기초 편집)"] },
+      { id: "job10", dept: "체육부", title: "생활체육과 - 팀장", type: "기타", catLabel: "기타",
+        time: "평일 2~3시간/주말활동 가능", place: "성전, 서면 및 각 종목별 훈련장소", people: "3명",
+        desc: "각 종목별 다원화 활성화하는데 피드백, 홍보 등 업무협력",
+        tags: ["기타","평일","3명"],
+        details: ["각 종목별 다원화 활성화하는데 피드백, 홍보 등 업무협력"] },
+      { id: "job11", dept: "체육부", title: "경기운영과 물품팀장", type: "행사지원", catLabel: "행사지원",
+        time: "평일 중 약2~3시간/주말에 업무가 거의 몰립니다", place: "성전, 각 종목 훈련장소 등", people: "1명",
+        desc: "지파체육부 물품을 관리, 이동, 점검하는 업무입니다. 봉사정신이 투철하고 체육관련 물품관리에 관심과 열정이 있는 분 환…",
+        tags: ["행사지원","평일","1명"],
+        details: ["지파체육부 물품을 관리, 이동, 점검하는 업무입니다. 봉사정신이 투철하고 체육관련 물품관리에 관심과 열정이 있는 분 환영합니다."] },
+      { id: "job12", dept: "체육부", title: "매니저", type: "기타", catLabel: "기타",
+        time: "주중 주2~3회 정도 약2~3시간씩/주말에 훈련이 몰림", place: "외부(각 종목별 훈련장), 변동가능", people: "7명",
+        desc: "각 종목과 지파체육부 행정라인과의 가교역할로서, 체육종목 홍보, 훈련 및 경기 동행, 취합 또는 행정업무 등",
+        tags: ["기타","시간 협의","7명"],
+        details: ["각 종목과 지파체육부 행정라인과의 가교역할로서, 체육종목 홍보, 훈련 및 경기 동행, 취합 또는 행정업무 등","(축구, 농구, 야구, 족구, 기마전, 태권도, 육상, 배드민턴 등 종목을 사랑하고, 신천지 체육 관심있는 분들은 누구나 환영! 덤으로 경기참관까지)"] },
+      { id: "job13", dept: "유년회", title: "주일 보조교사", type: "기타", catLabel: "기타",
+        time: "매주 일요일 08:30~10:30 또는 11:30~13:30/2시간", place: "유년회실", people: "인원 협의",
+        desc: "주일 활동 업무 지원(학생 보드게임 지도 등)",
+        tags: ["기타","주일","인원 협의"],
+        details: ["주일 활동 업무 지원(학생 보드게임 지도 등)"] },
+      { id: "job14", dept: "유년회", title: "댄스 동아리 교사 모집", type: "기타", catLabel: "기타",
+        time: "매주 일요일 10:50~11:30", place: "유년회실", people: "인원 협의",
+        desc: "댄스 동아리 프로그램 계획 및 운영",
+        tags: ["기타","주일","인원 협의"],
+        details: ["댄스 동아리 프로그램 계획 및 운영"] },
+      { id: "job15", dept: "유년회", title: "재능기부 교사 모집", type: "기타", catLabel: "기타",
+        time: "매주 일요일 09:30~10:30, 12:30~13:30/1시간내", place: "유년회실", people: "인원 협의",
+        desc: "예배 후 2부 활동에 미술 등으로 재능을 기부하여 1회성 수업을 진행",
+        tags: ["기타","주일","인원 협의"],
+        details: ["예배 후 2부 활동에 미술 등으로 재능을 기부하여 1회성 수업을 진행"] },
+      { id: "job16", dept: "유년회", title: "여름캠프 스탭 모집", type: "기타", catLabel: "기타",
+        time: "8월 8일 토요일 09:00~15:00/가능한 시간대", place: "유년회실", people: "인원 협의",
+        desc: "여름캠프 중 물놀이 안전과 행사 지원 보조",
+        tags: ["기타","토요일","인원 협의"],
+        details: ["여름캠프 중 물놀이 안전과 행사 지원 보조"] },
+      { id: "job17", dept: "찬양부", title: "관현악 악기체험 및 행사지원", type: "기타", catLabel: "기타",
+        time: "매주 일 15시~17시 / 회당 30분", place: "3층 소성전", people: "20명",
+        desc: "악기 체험과 홍보 역할 지원,",
+        tags: ["기타","주일","20명"],
+        details: ["악기 체험과 홍보 역할 지원,","연주 가능한 준전공자 이상은 추가로 예배와 행사지원 가능"] },
+      { id: "job18", dept: "찬양부", title: "찬양단 체험 및 예배 지원", type: "기타", catLabel: "기타",
+        time: "매주 토 15:00~17:30 / 회당 2시간 30분", place: "5층", people: "10명",
+        desc: "찬양단 체험과 예배, 행사지원",
+        tags: ["기타","토요일","10명"],
+        details: ["찬양단 체험과 예배, 행사지원"] },
+      { id: "job19", dept: "찬양부", title: "지원과 분장팀", type: "기타", catLabel: "기타",
+        time: "매주 수 09:30~10:30, 매주 일 09:00~09:30, 10:30~10:45 / 회당 30분~1시간", place: "5층", people: "5명",
+        desc: "찬양대원 헤어메이크업 지원",
+        tags: ["기타","주일","5명"],
+        details: ["찬양대원 헤어메이크업 지원"] },
+      { id: "job20", dept: "찬양부", title: "찬양팀 체험 및 행사 지원", type: "기타", catLabel: "기타",
+        time: "격주 토, 일 중 1일 20:00~22:00 / 회당 2시간", place: "대성전", people: "5명",
+        desc: "지파 기도회 및 공연, 행사 지원",
+        tags: ["기타","토요일","5명"],
+        details: ["지파 기도회 및 공연, 행사 지원"] },
+      { id: "job21", dept: "찬양부", title: "군악대 체험 및 행사 지원", type: "기타", catLabel: "기타",
+        time: "매주 일 15:00~17:00 / 회당 2시간", place: "5층", people: "5명",
+        desc: "내방예배준비, 군악대 악기 곡 연습",
+        tags: ["기타","주일","5명"],
+        details: ["내방예배준비, 군악대 악기 곡 연습"] },
+      { id: "job22", dept: "찬양부", title: "주일정오찬양대(청년회)", type: "기타", catLabel: "기타",
+        time: "매주 일 09:30~12:00, 15:00~17:00 / 회당 2시간", place: "5층", people: "30명",
+        desc: "찬양대 체험, 예배지원",
+        tags: ["기타","주일","30명"],
+        details: ["찬양대 체험, 예배지원"] },
+      { id: "job23", dept: "찬양부", title: "수요정오찬양대(만49세이하)", type: "기타", catLabel: "기타",
+        time: "매주 수 10:00~정오예배 / 회당 3시간 30분", place: "5층, 대성전", people: "20명",
+        desc: "찬양연습 후 일일 찬양대",
+        tags: ["기타","수요일","20명"],
+        details: ["찬양연습 후 일일 찬양대"] },
+      { id: "job24", dept: "봉교부", title: "신자봉 서포터즈", type: "행사지원", catLabel: "행사지원",
+        time: "평일 주간/오전-오후 유동적", place: "봉사 활동지, 봉교부 사무실", people: "2명",
+        desc: "세상에 빛이 되는 자원봉사 기획과 운영 보조 업무(아이디어 회의 및 봉사 현장 운영 스탭)",
+        tags: ["행사지원","평일","2명"],
+        details: ["세상에 빛이 되는 자원봉사 기획과 운영 보조 업무(아이디어 회의 및 봉사 현장 운영 스탭)"] },
+      { id: "job25", dept: "봉교부", title: "주차 안내", type: "행사지원", catLabel: "행사지원",
+        time: "매주 수, 일, 각종 행사 시 / 2~3시간(행사는 별도)", place: "성전 주차장, 외부 주차장, 행사 장소", people: "2명씩",
+        desc: "성전 주차장 : 입차 가능 여부 확인, 주차 보조",
+        tags: ["행사지원","수요일","2명씩"],
+        details: ["성전 주차장 : 입차 가능 여부 확인, 주차 보조","외부 주차장 : 등록 여부 확인, 주차 인원 부서 계수","행사 : 교통 업무에 따라 상이"] },
+      { id: "job26", dept: "봉교부", title: "교회차량 내부 청소", type: "기타", catLabel: "기타",
+        time: "평일 가능한 시간 언제나 / 1대당 1시간 내외", place: "성전 주차장", people: "2~4명",
+        desc: "교회차량 내부 세차(쓰레기 청소, 먼지 제거 등)",
+        tags: ["기타","평일","2~4명"],
+        details: ["교회차량 내부 세차(쓰레기 청소, 먼지 제거 등)"] }
+    ];
+
+    let currentJob = null;
+
+    /* ---------- 참여 현황 숫자 ---------- */
+    // 참여 가능 사명은 실제 목록 개수로 자동 계산 (가짜 숫자 아님).
+    // 신청 현황은 시트 연결 전에는 표시하지 않음.
+    function renderStats() {
+      document.getElementById("statDept").innerText = jobs.length;
+      const note = document.getElementById("statNote");
+      if (SHEETDB_API_URL) {
+        // 연결 후: 신청 명단은 운영자 구글시트에서 관리하므로 안내 문구는 숨김
+        document.getElementById("statApply").innerText = "접수중";
+        note.style.display = "none";
+      } else {
+        document.getElementById("statApply").innerText = "준비 중";
+        note.innerText = "신청 저장(구글시트) 연결 후 활성화됩니다";
+      }
+    }
+
+    /* ---------- 사명 목록 ---------- */
+    function renderJobs(filter = "all") {
+      const grid = document.getElementById("jobGrid");
+      const filtered = filter === "all" ? jobs : jobs.filter(job => job.type === filter);
+      grid.innerHTML = filtered.map(job => `
+        <article class="job-card">
+          <div class="card-top">
+            <span class="department">${job.dept}</span>
+            <span class="badge">안내중</span>
+          </div>
+          <h3>${job.title}</h3>
+          <p>${job.desc}</p>
+          <div class="tags">${job.tags.map(t => `<span class="tag">${t}</span>`).join("")}</div>
+          <div class="card-actions">
+            <button class="btn btn-secondary" onclick="openModal('${job.id}')">소개글 및 업무 보기</button>
+            <button class="btn btn-primary" onclick="openModal('${job.id}', true)">신청하기</button>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function filterJobs(filter, button) {
+      document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
+      button.classList.add("active");
+      renderJobs(filter);
+    }
+
+    /* ---------- 모달 ---------- */
+    function openModal(jobId, goApply = false) {
+      const job = jobs.find(item => item.id === jobId);
+      if (!job) return;
+      currentJob = job;
+
+      document.getElementById("modalTitle").innerText = job.title;
+      document.getElementById("modalDesc").innerText = job.dept;
+      document.getElementById("modalInfo").innerHTML = `
+        <div class="info-row"><span>활동 유형</span><b>${job.catLabel}</b></div>
+        <div class="info-row"><span>요일·시간</span><b>${job.time}</b></div>
+        <div class="info-row"><span>장소</span><b>${job.place}</b></div>
+        <div class="info-row"><span>모집 인원</span><b>${job.people}</b></div>
+      `;
+      document.getElementById("modalDetailList").innerHTML =
+        job.details.map(d => `<li>${d}</li>`).join("");
+
+      document.getElementById("jobModal").classList.add("open");
+      goApply ? showApplyForm() : showDetail();
+    }
+
+    function showDetail() {
+      document.getElementById("detailView").style.display = "block";
+      document.getElementById("applyView").style.display = "none";
+      document.getElementById("doneView").style.display = "none";
+    }
+    function backToDetail() { showDetail(); }
+
+    function showApplyForm() {
+      document.getElementById("applyJob").value = currentJob ? `${currentJob.title} (${currentJob.dept})` : "";
+      document.getElementById("applyError").style.display = "none";
+      document.getElementById("detailView").style.display = "none";
+      document.getElementById("applyView").style.display = "block";
+      document.getElementById("doneView").style.display = "none";
+    }
+
+    function closeModal() {
+      document.getElementById("jobModal").classList.remove("open");
+      ["applyName","applyPhone","applyDept"].forEach(id => document.getElementById(id).value = "");
+      document.getElementById("applyConsent").checked = false;
+    }
+
+    /* ---------- 신청 제출 → 구글시트 ---------- */
+    async function submitApply() {
+      const name = document.getElementById("applyName").value.trim();
+      const phone = document.getElementById("applyPhone").value.trim();
+      const dept = document.getElementById("applyDept").value.trim();
+      const consent = document.getElementById("applyConsent").checked;
+      const errBox = document.getElementById("applyError");
+
+      const showErr = (msg) => { errBox.innerText = msg; errBox.style.display = "block"; };
+
+      if (!name || !phone || !dept) return showErr("이름·연락처·부서를 모두 입력해주세요.");
+      if (!consent) return showErr("개인정보 수집·이용에 동의해주세요.");
+      errBox.style.display = "none";
+
+      const payload = {
+        data: {
+          "신청일시": new Date().toLocaleString("ko-KR"),
+          "신청사명": currentJob ? currentJob.title : "",
+          "담당부서": currentJob ? currentJob.dept : "",
+          "이름": name,
+          "연락처": phone,
+          "부서/지역/구역": dept,
+          "상태": "접수"   // 운영자가 접수→확인→승인→연결→완료로 관리
+        }
+      };
+
+      const btn = document.getElementById("applySubmitBtn");
+      btn.disabled = true; btn.innerText = "접수 중…";
+
+      try {
+        if (SHEETDB_API_URL) {
+          const res = await fetch(SHEETDB_API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Accept": "application/json" },
+            body: JSON.stringify(payload)
+          });
+          if (!res.ok) throw new Error("저장 실패");
+        }
+        document.getElementById("applyView").style.display = "none";
+        document.getElementById("doneView").style.display = "block";
+      } catch (e) {
+        showErr("접수 중 문제가 발생했어요. 잠시 후 다시 시도해주세요.");
+      } finally {
+        btn.disabled = false; btn.innerText = "신청 접수하기";
+      }
+    }
+
+    /* ---------- 추천 (선택값으로 방향만 정하고, 실제 사명 목록을 보여줌) ---------- */
+    function recommendWork() {
+      const time = document.getElementById("time").value;
+      const mbti = document.getElementById("mbti").value;
+      const enn = document.getElementById("enneagram").value;
+      const blood = document.getElementById("blood").value;
+      const result = document.getElementById("recommendResult");
+
+      if (!time && !mbti && !enn && !blood) {
+        result.innerHTML = `
+          <h3>먼저 하나 이상 선택해주세요</h3>
+          <p>참여 가능한 시간이나 MBTI·에니어그램·혈액형 중
+          하나 이상을 선택한 뒤 버튼을 눌러보세요.</p>`;
+        return;
+      }
+
+      // 사명 유형별 점수 계산
+      const score = { "콘텐츠제작": 0, "행사지원": 0, "행정지원": 0, "기타": 0 };
+
+      if (mbti) {
+        const e = mbti[0] === "E", n = mbti[1] === "N", f = mbti[2] === "F", p = mbti[3] === "P";
+        if (e && f) { score["행사지원"] += 2; score["기타"] += 1; }
+        else if (!e && !n) { score["행정지원"] += 2; score["콘텐츠제작"] += 1; }
+        else if (n && f) { score["콘텐츠제작"] += 2; }
+        else if (p) { score["행사지원"] += 2; }
+        else { score["행정지원"] += 1; score["콘텐츠제작"] += 1; }
+      }
+
+      const ennType = { "1":"행정지원","2":"기타","3":"행사지원","4":"콘텐츠제작","5":"행정지원","6":"행정지원","7":"행사지원","8":"행사지원","9":"기타" };
+      if (enn && ennType[enn]) score[ennType[enn]] += 2;
+
+      const bloodType = { "A":"행정지원","B":"행사지원","O":"기타","AB":"콘텐츠제작" };
+      if (blood && bloodType[blood]) score[bloodType[blood]] += 1;
+
+      if (time === "worship") { score["행사지원"] += 1; score["기타"] += 1; }
+      else if (time === "weekday") { score["행정지원"] += 2; }
+      else if (time === "evening") { score["콘텐츠제작"] += 1; score["행정지원"] += 1; }
+      else if (time === "event") { score["행사지원"] += 2; }
+      else if (time === "regular") { score["기타"] += 1; }
+
+      // 가장 높은 유형 선택
+      let best = null, bestScore = -1;
+      for (const t in score) { if (score[t] > bestScore) { bestScore = score[t]; best = t; } }
+
+      // 추천 사명 뽑기 (점수가 없으면 대표 사명 몇 개)
+      let picks = bestScore > 0 ? jobs.filter(j => j.type === best) : [];
+      if (picks.length === 0) picks = jobs.slice(0, 4);
+      picks = picks.slice(0, 4);
+
+      const timeNote = {
+        "worship": "주일 예배 전후에 함께할 수 있는 사명이에요.",
+        "weekday": "평일 낮에 참여하기 좋은 사명이에요.",
+        "evening": "평일 저녁에 함께하기 좋은 사명이에요.",
+        "short": "짧은 시간부터 부담 없이 시작할 수 있어요.",
+        "half": "반나절 정도 참여할 수 있는 사명이에요.",
+        "event": "행사 때 집중해서 함께하기 좋은 사명이에요.",
+        "regular": "정기적으로 꾸준히 함께하기 좋은 사명이에요.",
+        "": "선택하신 유형에 어울리는 사명이에요."
+      }[time || ""];
+
+      const items = picks.map(job => `
+        <div class="rec-job">
+          <div class="rec-job-top">
+            <span class="rec-dept">${job.dept}</span>
+            <strong>${job.title}</strong>
+          </div>
+          <p class="rec-desc">${job.desc}</p>
+          <div class="rec-actions">
+            <button class="btn btn-secondary" onclick="openModal('${job.id}')">자세히</button>
+            <button class="btn btn-primary" onclick="openModal('${job.id}', true)">신청하기</button>
+          </div>
+        </div>
+      `).join("");
+
+      result.innerHTML = `
+        <h3>이런 사명은 어떠세요?</h3>
+        <p>${timeNote}</p>
+        <div class="rec-list">${items}</div>
+        <div class="fun-note">
+          입력하신 시간·MBTI·에니어그램·혈액형은 추천 방향을 정하는 데만 쓰이며 저장되지 않습니다.
+          실제 참여는 자유롭게 선택하시면 됩니다.
+        </div>
+      `;
+    }
+
+    document.getElementById("jobModal").addEventListener("click", function(event) {
+      if (event.target === this) closeModal();
+    });
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "Escape") closeModal();
+    });
+
+    renderStats();
+    renderJobs();
+  </script>
+</body>
+</html>
