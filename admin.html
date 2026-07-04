@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>러부콜 관리자 현황</title>
+
+  <style>
+    :root {
+      --main: #3147ff;
+      --dark: #172033;
+      --soft: #f4f6fb;
+      --line: #e5e8f0;
+      --text: #2a2f3a;
+      --muted: #6b7280;
+      --success: #16a34a;
+      --warning: #f59e0b;
+      --danger: #dc2626;
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", sans-serif;
+      color: var(--text);
+      background: var(--soft);
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 28px 20px 60px; }
+
+    /* 잠금 화면 */
+    #gate {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      padding: 24px;
+    }
+    .gate-card {
+      background: #fff; border: 1px solid var(--line); border-radius: 20px;
+      padding: 34px 30px; width: min(380px, 100%); text-align: center;
+      box-shadow: 0 14px 34px rgba(20,30,60,0.08);
+    }
+    .gate-card h1 { font-size: 20px; margin: 0 0 6px; color: var(--dark); }
+    .gate-card p { font-size: 13.5px; color: var(--muted); margin: 0 0 20px; }
+    .gate-card input {
+      width: 100%; padding: 13px 14px; border: 1px solid var(--line); border-radius: 12px;
+      font-size: 15px; margin-bottom: 12px; text-align: center; letter-spacing: 2px;
+    }
+    .gate-card button {
+      width: 100%; padding: 13px; border: 0; border-radius: 12px; background: var(--main);
+      color: #fff; font-weight: 800; font-size: 15px; cursor: pointer;
+    }
+    .gate-error { color: var(--danger); font-size: 13px; margin-top: 10px; display: none; }
+
+    /* 대시보드 */
+    #dashboard { display: none; }
+    .top-row {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; flex-wrap: wrap; gap: 12px;
+    }
+    .top-row h1 { font-size: 24px; margin: 0; color: var(--dark); }
+    .top-row .actions { display: flex; gap: 8px; }
+    .btn {
+      border: 1px solid var(--line); background: #fff; padding: 9px 14px; border-radius: 10px;
+      font-weight: 700; font-size: 13.5px; cursor: pointer; color: var(--dark);
+    }
+    .btn:hover { background: var(--soft); }
+
+    .stat-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 24px;
+    }
+    .stat-card {
+      background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px;
+    }
+    .stat-card .num { font-size: 26px; font-weight: 900; color: var(--dark); }
+    .stat-card .label { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+
+    .bars {
+      background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px; margin-bottom: 24px;
+    }
+    .bars h2 { font-size: 15px; margin: 0 0 14px; color: var(--dark); }
+    .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
+    .bar-row .name { width: 100px; font-size: 12.5px; color: var(--muted); flex-shrink: 0; }
+    .bar-row .track { flex: 1; background: var(--soft); border-radius: 999px; height: 14px; overflow: hidden; }
+    .bar-row .fill { height: 100%; border-radius: 999px; background: var(--main); }
+    .bar-row .count { width: 32px; text-align: right; font-size: 12.5px; font-weight: 800; color: var(--dark); }
+
+    .table-box {
+      background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
+    }
+    .table-head {
+      display: flex; justify-content: space-between; align-items: center; padding: 16px 18px; border-bottom: 1px solid var(--line); gap: 12px; flex-wrap: wrap;
+    }
+    .table-head h2 { font-size: 15px; margin: 0; color: var(--dark); }
+    .table-head input {
+      padding: 8px 12px; border: 1px solid var(--line); border-radius: 10px; font-size: 13px; width: 220px;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+    th { color: var(--muted); font-weight: 800; background: var(--soft); position: sticky; top: 0; }
+    td.wrap-cell { white-space: normal; }
+    .table-scroll { overflow-x: auto; max-height: 560px; overflow-y: auto; }
+
+    .badge {
+      display: inline-block; padding: 4px 9px; border-radius: 999px; font-size: 11.5px; font-weight: 800;
+    }
+    .b-wait { background: #fef3c7; color: #92400e; }
+    .b-progress { background: #dbeafe; color: #1e40af; }
+    .b-done { background: #dcfce7; color: #166534; }
+    .b-reject { background: #fee2e2; color: #991b1b; }
+
+    .empty { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 13.5px; }
+
+    @media (max-width: 700px) {
+      .table-head input { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 잠금 화면 -->
+  <div id="gate">
+    <div class="gate-card">
+      <h1>러부콜 관리자 현황</h1>
+      <p>관리자 비밀번호를 입력해주세요.</p>
+      <input type="password" id="gateKey" placeholder="비밀번호" onkeydown="if(event.key==='Enter') enterDashboard()" />
+      <button onclick="enterDashboard()">입장하기</button>
+      <div class="gate-error" id="gateError">비밀번호가 올바르지 않습니다.</div>
+    </div>
+  </div>
+
+  <!-- 대시보드 -->
+  <div id="dashboard">
+    <div class="wrap">
+      <div class="top-row">
+        <h1>러부콜 관리자 현황</h1>
+        <div class="actions">
+          <button class="btn" onclick="loadData()">새로고침</button>
+          <button class="btn" onclick="logout()">잠그기</button>
+        </div>
+      </div>
+
+      <div class="stat-grid" id="statGrid"></div>
+
+      <div class="bars">
+        <h2>상태별 분포</h2>
+        <div id="barList"></div>
+      </div>
+
+      <div class="table-box">
+        <div class="table-head">
+          <h2>전체 신청 목록</h2>
+          <input type="text" id="searchInput" placeholder="이름·사명·상태로 검색" oninput="renderTable()" />
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>No.</th><th>신청일시</th><th>사명</th><th>담당부서</th>
+                <th>이름</th><th>연락처</th><th>부서/지역/구역</th><th>상태</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+          <div class="empty" id="emptyMsg" style="display:none">신청 내역이 없습니다.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* =========================================================
+       [설정] 구글시트 저장용 웹앱 주소
+       러부콜.html 에 넣은 SHEET_WEBAPP_URL과 동일한 값을 넣으세요.
+       ========================================================= */
+    const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbw9KMvRsItot0EMa4AIYtPTjw198VNSY38hz73wGHjMwD2KApNiERql4WOOAuhOMm0B_Q/exec";
+
+    const STATUS_LABELS = {
+      "담당자확인대기": ["담당자 확인대기", "b-wait"],
+      "부서확인대기": ["부서 확인대기", "b-wait"],
+      "부서검토중": ["부서 검토중", "b-wait"],
+      "부서승인": ["부서 승인", "b-progress"],
+      "부서반려": ["부서 반려", "b-reject"],
+      "사명전달완료": ["사명 전달완료", "b-progress"],
+      "매칭완료": ["매칭완료", "b-progress"],
+      "완료": ["완료", "b-done"]
+    };
+    const STATUS_ORDER = Object.keys(STATUS_LABELS);
+
+    let adminKey = sessionStorage.getItem("loveucall_admin_key") || "";
+    let allItems = [];
+
+    function enterDashboard() {
+      const key = document.getElementById("gateKey").value.trim();
+      if (!key) return;
+      adminKey = key;
+      loadData(true);
+    }
+
+    function logout() {
+      sessionStorage.removeItem("loveucall_admin_key");
+      adminKey = "";
+      document.getElementById("dashboard").style.display = "none";
+      document.getElementById("gate").style.display = "flex";
+      document.getElementById("gateKey").value = "";
+    }
+
+    async function loadData(fromGate) {
+      if (!WEBAPP_URL) {
+        alert("아직 WEBAPP_URL이 설정되지 않았어요. 코드 상단의 WEBAPP_URL을 채워주세요.");
+        return;
+      }
+      const errBox = document.getElementById("gateError");
+      try {
+        const url = WEBAPP_URL + "?action=admin&key=" + encodeURIComponent(adminKey);
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if (!data.ok) {
+          if (fromGate) { errBox.style.display = "block"; }
+          return;
+        }
+
+        sessionStorage.setItem("loveucall_admin_key", adminKey);
+        errBox.style.display = "none";
+        document.getElementById("gate").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+
+        allItems = data.items || [];
+        renderStats(data.counts || {});
+        renderTable();
+      } catch (e) {
+        if (fromGate) { errBox.style.display = "block"; }
+      }
+    }
+
+    function renderStats(counts) {
+      const grid = document.getElementById("statGrid");
+      grid.innerHTML = STATUS_ORDER.map(s => `
+        <div class="stat-card">
+          <div class="num">${counts[s] || 0}</div>
+          <div class="label">${STATUS_LABELS[s][0]}</div>
+        </div>
+      `).join("");
+
+      const max = Math.max(1, ...STATUS_ORDER.map(s => counts[s] || 0));
+      document.getElementById("barList").innerHTML = STATUS_ORDER.map(s => {
+        const val = counts[s] || 0;
+        const pct = Math.round((val / max) * 100);
+        return `
+          <div class="bar-row">
+            <div class="name">${STATUS_LABELS[s][0]}</div>
+            <div class="track"><div class="fill" style="width:${pct}%"></div></div>
+            <div class="count">${val}</div>
+          </div>`;
+      }).join("");
+    }
+
+    function renderTable() {
+      const q = (document.getElementById("searchInput").value || "").trim().toLowerCase();
+      const body = document.getElementById("tableBody");
+      const empty = document.getElementById("emptyMsg");
+
+      const filtered = !q ? allItems : allItems.filter(item =>
+        [item.name, item.job, item.dept, item.belong, item.status]
+          .some(v => String(v || "").toLowerCase().includes(q))
+      );
+
+      if (filtered.length === 0) {
+        body.innerHTML = "";
+        empty.style.display = "block";
+        return;
+      }
+      empty.style.display = "none";
+
+      body.innerHTML = filtered.map(item => {
+        const label = STATUS_LABELS[item.status] || [item.status, "b-wait"];
+        return `
+          <tr>
+            <td>${item.no}</td>
+            <td>${item.time}</td>
+            <td class="wrap-cell">${item.job}</td>
+            <td>${item.dept}</td>
+            <td>${item.name}</td>
+            <td>${item.phone}</td>
+            <td class="wrap-cell">${item.belong}</td>
+            <td><span class="badge ${label[1]}">${label[0]}</span></td>
+          </tr>`;
+      }).join("");
+    }
+
+    // 이전에 입력한 비밀번호가 세션에 남아있으면 자동으로 시도
+    if (adminKey) loadData(false);
+  </script>
+</body>
+</html>
