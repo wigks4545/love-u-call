@@ -107,6 +107,19 @@
 
     .empty { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 13.5px; }
 
+    .mobile-cards { display: none; padding: 12px; }
+    .m-card {
+      background: #fff; border: 1px solid var(--line); border-radius: 12px;
+      padding: 14px 16px; margin-bottom: 10px;
+    }
+    .m-card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .m-card-top .m-no { font-size: 12px; color: var(--muted); font-weight: 800; }
+    .m-card-title { font-size: 15px; font-weight: 900; color: var(--dark); margin-bottom: 6px; }
+    .m-card-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
+    .m-card-row:last-child { border-bottom: 0; }
+    .m-card-row .m-label { color: var(--muted); font-weight: 700; }
+    .m-card-row .m-value { color: var(--dark); font-weight: 500; text-align: right; }
+
     @media (max-width: 700px) {
       .table-head input { width: 100%; }
       .stat-grid { grid-template-columns: repeat(3, 1fr); }
@@ -114,8 +127,8 @@
       .stat-card .label { font-size: 10.5px; }
       .bar-row .name { width: 70px; font-size: 11px; }
       .top-row h1 { font-size: 20px; }
-      .table-scroll { font-size: 12px; }
-      th, td { padding: 8px 10px; }
+      .table-scroll { display: none; }
+      .mobile-cards { display: block; }
     }
   </style>
 </head>
@@ -167,6 +180,7 @@
           </table>
           <div class="empty" id="emptyMsg" style="display:none">신청 내역이 없습니다.</div>
         </div>
+        <div class="mobile-cards" id="mobileCards"></div>
       </div>
     </div>
   </div>
@@ -296,6 +310,25 @@
             <td><span class="badge ${label[1]}">${label[0]}</span></td>
           </tr>`;
       }).join("");
+
+      // 모바일용 카드 렌더링
+      const mc = document.getElementById("mobileCards");
+      mc.innerHTML = filtered.map(item => {
+        const label = STATUS_LABELS[item.status] || [item.status, "b-wait"];
+        return `
+          <div class="m-card">
+            <div class="m-card-top">
+              <span class="m-no">No.${item.no}</span>
+              <span class="badge ${label[1]}">${label[0]}</span>
+            </div>
+            <div class="m-card-title">${item.job}</div>
+            <div class="m-card-row"><span class="m-label">이름</span><span class="m-value">${item.name}</span></div>
+            <div class="m-card-row"><span class="m-label">연락처</span><span class="m-value">${item.phone}</span></div>
+            <div class="m-card-row"><span class="m-label">부서/지역/구역</span><span class="m-value">${item.belong}</span></div>
+            <div class="m-card-row"><span class="m-label">담당부서</span><span class="m-value">${item.dept}</span></div>
+            <div class="m-card-row"><span class="m-label">신청일시</span><span class="m-value">${item.time}</span></div>
+          </div>`;
+      }).join("") || '<div class="empty">신청 내역이 없습니다.</div>';
     }
 
     // 이전에 입력한 비밀번호가 세션에 남아있으면 자동으로 시도
