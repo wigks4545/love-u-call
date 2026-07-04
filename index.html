@@ -520,6 +520,7 @@
       <div class="menu">
         <a href="#jobs">사명 안내</a>
         <a href="#recommend">나에게 맞는 사명 추천</a>
+        <a href="#mystatus">내 신청 현황</a>
       </div>
     </nav>
   </header>
@@ -676,6 +677,44 @@
         </div>
       </div>
     </section>
+
+    <section id="mystatus">
+      <div class="container">
+        <div class="section-title">
+          <div>
+            <h2>내 신청 현황</h2>
+            <p>이름·연락처·확인번호를 입력하면 신청 현황을 볼 수 있습니다.</p>
+          </div>
+        </div>
+
+        <div class="recommend-box">
+          <div class="panel">
+            <div class="form-row">
+              <label>이름</label>
+              <input type="text" id="lookupName" placeholder="예) 김성도" />
+            </div>
+            <div class="form-row">
+              <label>연락처 또는 텔레그램 아이디</label>
+              <input type="text" id="lookupPhone" placeholder="예) 010-1234-5678 또는 @telegram_id" />
+            </div>
+            <div class="form-row">
+              <label>확인번호 (4자리 숫자)</label>
+              <input type="text" id="lookupPin" inputmode="numeric" maxlength="4" placeholder="예) 1234" />
+            </div>
+            <div class="field-error" id="lookupError" style="display:none"></div>
+            <button class="btn btn-primary" style="width:100%" id="lookupBtn" onclick="checkMyStatus()">조회하기</button>
+            <div style="margin-top:10px; font-size:12.5px; color:var(--muted)">
+              확인번호를 잊으셨다면 러부콜 담당자에게 문의해주세요.
+            </div>
+          </div>
+
+          <div class="panel result" id="lookupResult">
+            <h3>조회 결과가 여기에 표시됩니다</h3>
+            <p>왼쪽 정보를 입력하고 조회하기를 눌러주세요.</p>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer>
@@ -733,6 +772,13 @@
           <label>부서 / 지역 / 구역 <span class="req">*</span></label>
           <input type="text" id="applyDept" placeholder="예) 00회 / 동래 / 00구역" />
         </div>
+        <div class="form-row">
+          <label>확인번호 (4자리 숫자) <span class="req">*</span></label>
+          <input type="text" id="applyPin" inputmode="numeric" maxlength="4" placeholder="예) 1234" />
+          <div style="margin-top:6px; font-size:12px; color:var(--muted)">
+            나중에 신청 현황을 조회할 때 필요해요. 평소 쓰시는 비밀번호가 아니라 기억하기 쉬운 숫자 4자리를 새로 정해주세요.
+          </div>
+        </div>
 
         <label class="consent">
           <input type="checkbox" id="applyConsent" />
@@ -758,6 +804,13 @@
             운영자 확인 후 소속부서 승인·담당부서 연결을 거쳐<br/>
             담당자가 개별로 연락드립니다. 함께해주셔서 감사합니다.
           </p>
+          <div style="margin-top:16px; background:var(--soft); border-radius:12px; padding:14px 16px; text-align:left;">
+            <div style="font-size:13px; color:var(--muted); margin-bottom:4px;">확인번호</div>
+            <div style="font-size:22px; font-weight:900; color:var(--dark); letter-spacing:4px;" id="doneShownPin">0000</div>
+            <div style="margin-top:6px; font-size:12.5px; color:var(--muted);">
+              "내 신청 현황" 메뉴에서 이름·연락처·확인번호로 조회할 수 있어요. 잊으셨다면 담당자에게 문의해주세요.
+            </div>
+          </div>
           <button class="btn btn-primary" style="margin-top:20px" onclick="closeModal()">확인</button>
         </div>
       </div>
@@ -766,21 +819,11 @@
 
   <script>
     /* =========================================================
-       [설정] 신청 명단 저장 — 구글 앱스 스크립트 (외부 회사 없이 내 구글시트로 직행)
-       ※ 시트는 비공개로 유지되고, 외부에서 명단을 읽는 통로가 없어 개인정보가 안전합니다.
-
-       [준비 방법]  (구글시트_저장_appscript.gs 파일 사용)
-       1) 개인 Gmail로 구글 드라이브에서 새 구글시트를 만든다. (열 제목은 스크립트가 자동으로 넣어줌)
-       2) 그 시트 상단 [확장 프로그램] → [Apps Script].
-       3) 기존 코드를 지우고 구글시트_저장_appscript.gs 내용을 전부 붙여넣고 저장.
-       4) [배포] → [새 배포] → 유형(⚙️) '웹 앱'
-            - 실행 계정: 나
-            - 액세스 권한: 모든 사용자   ← 꼭!
-       5) 권한 승인('확인되지 않은 앱' 경고 → 고급 → 이동) 후 나오는
-          '웹 앱 URL'(.../exec)을 아래 따옴표 안에 붙여넣는다.
+       [설정] 구글시트 저장 주소
+       구글 앱스 스크립트를 배포하면 받는 웹앱 URL을 아래에 붙여넣으세요.
        비워두면 신청은 화면상으로만 접수되고 시트에 저장되지 않습니다.
        ========================================================= */
-    const SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbw9KMvRsItot0EMa4AIYtPTjw198VNSY38hz73wGHjMwD2KApNiERql4WOOAuhOMm0B_Q/exec"; // 러부콜 신청 저장
+    const SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbw9KMvRsItot0EMa4AIYtPTjw198VNSY38hz73wGHjMwD2KApNiERql4WOOAuhOMm0B_Q/exec";
 
     const jobs = [
       { id: "job1", dept: "행정서무부", title: "기록보존과 자료 디지털화 및 정리 지원", type: "기타", catLabel: "기타",
@@ -924,12 +967,12 @@
       document.getElementById("statDept").innerText = jobs.length;
       const note = document.getElementById("statNote");
       if (SHEET_WEBAPP_URL) {
-        // 연결 후: 신청 명단은 운영자 구글시트에서 관리하므로 안내 문구는 숨김
+        // 시트 연결 후: 신청 수는 운영자 시트에서 관리하므로 이 카드에서는 표시만 정리하고 안내 문구는 숨김
         document.getElementById("statApply").innerText = "접수중";
         note.style.display = "none";
       } else {
         document.getElementById("statApply").innerText = "준비 중";
-        note.innerText = "신청 저장(구글시트) 연결 후 활성화됩니다";
+        note.innerText = "신청 저장(구글시트) 연결 후 집계됩니다";
       }
     }
 
@@ -998,7 +1041,7 @@
 
     function closeModal() {
       document.getElementById("jobModal").classList.remove("open");
-      ["applyName","applyPhone","applyDept"].forEach(id => document.getElementById(id).value = "");
+      ["applyName","applyPhone","applyDept","applyPin"].forEach(id => document.getElementById(id).value = "");
       document.getElementById("applyConsent").checked = false;
     }
 
@@ -1007,19 +1050,21 @@
       const name = document.getElementById("applyName").value.trim();
       const phone = document.getElementById("applyPhone").value.trim();
       const dept = document.getElementById("applyDept").value.trim();
+      const pin = document.getElementById("applyPin").value.trim();
       const consent = document.getElementById("applyConsent").checked;
       const errBox = document.getElementById("applyError");
 
       const showErr = (msg) => { errBox.innerText = msg; errBox.style.display = "block"; };
 
       if (!name || !phone || !dept) return showErr("이름·연락처·부서를 모두 입력해주세요.");
+      if (!/^\d{4}$/.test(pin)) return showErr("확인번호는 숫자 4자리로 입력해주세요.");
       if (!consent) return showErr("개인정보 수집·이용에 동의해주세요.");
       errBox.style.display = "none";
 
       const payload = {
         job: currentJob ? currentJob.title : "",
         dept: currentJob ? currentJob.dept : "",
-        name, phone, belong: dept,
+        name, phone, belong: dept, pin,
         time: new Date().toLocaleString("ko-KR")
       };
 
@@ -1035,12 +1080,81 @@
             body: JSON.stringify(payload)
           });
         }
+        document.getElementById("doneShownPin").innerText = pin;
         document.getElementById("applyView").style.display = "none";
         document.getElementById("doneView").style.display = "block";
       } catch (e) {
         showErr("접수 중 문제가 발생했어요. 잠시 후 다시 시도해주세요.");
       } finally {
         btn.disabled = false; btn.innerText = "신청 접수하기";
+      }
+    }
+
+    /* ---------- 내 신청 현황 조회 ---------- */
+    function softStatusText_(status) {
+      const map = {
+        "담당자확인대기": ["접수됨", "신청이 잘 들어왔어요"],
+        "부서확인대기": ["접수됨", "신청이 잘 들어왔어요"],
+        "부서검토중": ["접수됨", "신청이 잘 들어왔어요"],
+        "부서승인": ["준비 중", "승인·연결을 진행하고 있어요"],
+        "사명전달완료": ["준비 중", "승인·연결을 진행하고 있어요"],
+        "매칭완료": ["확정됨", "참여가 확정되었어요"],
+        "완료": ["참여완료", "함께해주셔서 감사합니다"]
+      };
+      if (status === "부서반려") return null; // 화면에 상태를 띄우지 않고 별도 문구로 처리
+      return map[status] || ["접수됨", "신청이 잘 들어왔어요"];
+    }
+
+    async function checkMyStatus() {
+      const name = document.getElementById("lookupName").value.trim();
+      const phone = document.getElementById("lookupPhone").value.trim();
+      const pin = document.getElementById("lookupPin").value.trim();
+      const errBox = document.getElementById("lookupError");
+      const result = document.getElementById("lookupResult");
+
+      const showErr = (msg) => { errBox.innerText = msg; errBox.style.display = "block"; };
+      if (!name || !phone || !/^\d{4}$/.test(pin)) {
+        return showErr("이름·연락처와 숫자 4자리 확인번호를 모두 입력해주세요.");
+      }
+      errBox.style.display = "none";
+
+      if (!SHEET_WEBAPP_URL) {
+        result.innerHTML = `<h3>아직 조회를 연결하지 않았어요</h3><p>운영자에게 문의해주세요.</p>`;
+        return;
+      }
+
+      const btn = document.getElementById("lookupBtn");
+      btn.disabled = true; btn.innerText = "조회 중…";
+
+      try {
+        const url = SHEET_WEBAPP_URL + "?action=lookup"
+          + "&name=" + encodeURIComponent(name)
+          + "&phone=" + encodeURIComponent(phone)
+          + "&pin=" + encodeURIComponent(pin);
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if (!data.ok || !data.items || data.items.length === 0) {
+          result.innerHTML = `<h3>일치하는 신청 내역이 없어요</h3><p>이름·연락처·확인번호를 다시 확인해주세요. 확인번호를 잊으셨다면 담당자에게 문의해주세요.</p>`;
+          return;
+        }
+
+        const cards = data.items.map(item => {
+          const soft = softStatusText_(item.status);
+          const label = soft ? soft[0] : "진행 중";
+          const desc = soft ? soft[1] : "담당자가 곧 개별 연락드립니다.";
+          return `
+            <div class="rec-job">
+              <div class="rec-job-top"><span class="rec-dept">${item.job}</span></div>
+              <p class="rec-desc"><strong>${label}</strong> · ${desc}</p>
+            </div>`;
+        }).join("");
+
+        result.innerHTML = `<h3>조회 결과</h3><div class="rec-list">${cards}</div>`;
+      } catch (e) {
+        result.innerHTML = `<h3>조회 중 문제가 발생했어요</h3><p>잠시 후 다시 시도해주세요.</p>`;
+      } finally {
+        btn.disabled = false; btn.innerText = "조회하기";
       }
     }
 
